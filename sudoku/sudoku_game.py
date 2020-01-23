@@ -16,10 +16,34 @@ class SudokuBoard:
         for i in range(self.nDims):
             print(self.board[i])
 
-    def solver(self):
-        return self._solver_internal(0, 0, self.board[0][0])
+    def solver_by_values(self):
+        loc = [0, 0]
+        if not self._empty_fields(loc):
+            return True
+        for val in range(1, 10):
+            possible_moves = self._possible_moves(loc[0], loc[1])
+            if val not in possible_moves:
+                continue
+            if possible_moves:
+                self.board[loc[0]][loc[1]] = val
+                if self.solver_by_values():
+                    return True
+                self.board[loc[0]][loc[1]] = 0
+        return False
 
-    def _solver_internal(self, x: int, y: int, move):
+    def _empty_fields(self, li):
+        for row in range(self.nDims):
+            for col in range(self.nDims):
+                if self.board[row][col] == 0:
+                    li[0] = row
+                    li[1] = col
+                    return True
+        return False
+
+    def solver_by_fields(self):
+        return self._solver_by_fields_internal(0, 0, self.board[0][0])
+
+    def _solver_by_fields_internal(self, x: int, y: int, move):
         flag = 0
         self.board[x][y] = move
         if self._is_ready():
@@ -33,7 +57,7 @@ class SudokuBoard:
                     self.board[x][y] = 0
                     return False
                 for new_move in possible_moves:
-                    if self._solver_internal(i, j, new_move):
+                    if self._solver_by_fields_internal(i, j, new_move):
                         return True
                     else:
                         flag = 1

@@ -44,15 +44,21 @@ class TestSudoku(unittest.TestCase):
                 is_empty = False
         self.assertFalse(is_empty)
 
-    # def test_solver(self):
-    #    game, solution = _sample_sudoku_with_solution()
-    #    game.solver()
-    #    self.assertListEqual(game.board, solution.board)
+    def test_solver_by_fields(self):
+        game, solution = _sample_sudoku_with_solution()
+        game.solver_by_fields()
+        self.assertListEqual(game.board, solution.board)
+
+    def test_solver_by_values(self):
+        game, solution = _sample_sudoku_with_solution()
+        game.solver_by_values()
+        self.assertListEqual(game.board, solution.board)
 
     def test_is_ready(self):
         game, solution = _sample_sudoku_with_solution()
         self.assertTrue(solution._is_ready())
         self.assertFalse(game._is_ready())
+
     # def test_possible_digits(self):
     #    game, solution = _sample_sudoku_with_solution()
     #    solution = _missig_squre_digits_data()
