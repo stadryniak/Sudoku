@@ -2,6 +2,8 @@ import pygame
 import sys
 from pygame.locals import *
 
+WAITTIME = 3000
+
 # Sets background color
 BACKGROUND = (255, 255, 255)
 # Sets frames per second
@@ -134,7 +136,7 @@ def main_ui(game):
                         box.draw()
         pygame.display.update()
         if flag == 1:
-            pygame.time.wait(3000)
+            pygame.time.wait(WAITTIME)
             game.solver_by_fields(cells)
             flag = 0
         FPSCLOCK.tick(FPS)
