@@ -21,3 +21,5 @@ if __name__ == "__main__":
     res = game.solver_by_values()
     print(res)
     game.print_board()
+    is_valid = game.validate_solution()
+    print(is_valid)

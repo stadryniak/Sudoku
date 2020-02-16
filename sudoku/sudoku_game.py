@@ -93,7 +93,7 @@ class SudokuBoard:
                         pass
         return available_numbers
 
-    def _square_missing_numbers(self, v: int, c: int) -> list:
+    def _square_missing_numbers(self, v: int, c: int):
         possible_numbers = list(range(1, self.nDims + 1))
         for i in range(v // 3 * 3, v // 3 * 3 + 3):
             for j in range(c // 3 * 3, c // 3 * 3 + 3):
@@ -103,3 +103,25 @@ class SudokuBoard:
                     except ValueError:
                         pass
         return possible_numbers
+
+    def validate_solution(self):
+        possible_numbers = []
+        for i in range(self.nDims):
+            possible_numbers = list(range(1, self.nDims + 1))
+            for j in self.board[i]:
+                try:
+                    possible_numbers.remove(j)
+                except ValueError:
+                    return False
+        if possible_numbers:
+            return False
+        for j in range(self.nDims):
+            possible_numbers = list(range(1, self.nDims + 1))
+            for i in range(self.nDims):
+                try:
+                    possible_numbers.remove(self.board[i][j])
+                except ValueError:
+                    return False
+            if possible_numbers:
+                return False
+        return True
