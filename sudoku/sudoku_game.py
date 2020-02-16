@@ -1,6 +1,3 @@
-from time import sleep
-
-
 class SudokuBoard:
     """
     creates sudoku board of given size (and appropriate max field value), initial values are 0, solver function

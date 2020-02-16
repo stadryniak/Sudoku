@@ -1,8 +1,6 @@
 import pygame
 import sys
 from pygame.locals import *
-import threading
-from sudoku import sudoku_game
 
 # Sets background color
 BACKGROUND = (255, 255, 255)
