@@ -1,9 +1,13 @@
+from time import sleep
+
+
 class SudokuBoard:
     """
     creates sudoku board of given size (and appropriate max field value), initial values are 0, solver function
     """
 
     def __init__(self):
+        self.interactive_mode = False
         self.nDims = 9
         self.maxNumber = 9
         self.board = []
@@ -40,12 +44,18 @@ class SudokuBoard:
                     return True
         return False
 
-    def solver_by_fields(self):
-        return self._solver_by_fields_internal(0, 0, self.board[0][0])
+    def solver_by_fields(self, boxes=None):
+        if boxes is None:
+            boxes = [[]]
+        return self._solver_by_fields_internal(0, 0, self.board[0][0], boxes)
 
-    def _solver_by_fields_internal(self, x: int, y: int, move):
+    def _solver_by_fields_internal(self, x: int, y: int, move, boxes=None):
+        if boxes is None:
+            boxes = [[]]
         flag = 0
         self.board[x][y] = move
+        if self.interactive_mode:
+            boxes[x][y].text = str(move)
         if self._is_ready():
             return True
         for i in range(self.nDims):
@@ -55,9 +65,11 @@ class SudokuBoard:
                 possible_moves = tuple(self._possible_moves(i, j))
                 if not possible_moves:
                     self.board[x][y] = 0
+                    if self.interactive_mode:
+                        boxes[x][y].text = "0"
                     return False
                 for new_move in possible_moves:
-                    if self._solver_by_fields_internal(i, j, new_move):
+                    if self._solver_by_fields_internal(i, j, new_move, boxes):
                         return True
                     else:
                         flag = 1
@@ -66,6 +78,8 @@ class SudokuBoard:
             if flag == 1:
                 break
         self.board[x][y] = 0
+        if self.interactive_mode:
+            boxes[x][y].text = "0"
         return False
 
     def _possible_moves(self, x, y) -> list:
