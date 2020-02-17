@@ -5,6 +5,7 @@ import sys
 
 WAITMS = 10
 
+
 def update_dispay_text(boxes, x, y, move):
     for event in pg.event.get():
         if event.type == QUIT:
