@@ -61,14 +61,27 @@ class SudokuBoard:
         return False
 
     def solver_by_fields(self, boxes=None):
+        """
+        Calls backtracking solver function
+        :param boxes:
+        :return:
+        """
         if boxes is None:
             boxes = [[]]
         return self._solver_by_fields_internal(0, 0, self.board[0][0], boxes)
 
     def _solver_by_fields_internal(self, x: int, y: int, move, boxes=None):
+        """
+        Backtracking solver. Boxes are for display function.
+        :param x:
+        :param y:
+        :param move:
+        :param boxes:
+        :return:
+        """
         if boxes is None:
             boxes = [[]]
-        flag = 0
+        flag = 0  # is set to 1 when backtracking occurs (breaks loops)
         self.board[x][y] = move
         if self.interactive_mode:
             update_dispay_text(boxes, x, y, move)
@@ -99,35 +112,58 @@ class SudokuBoard:
         return False
 
     def _possible_moves(self, x, y) -> list:
+        """
+        Generate list of values possible in given square
+        :param x:
+        :param y:
+        :return:
+        """
         available_numbers = list(range(1, self.nDims + 1))
         available_numbers = self._square_missing_numbers(x, y, available_numbers)
         available_numbers = self._line_missing_numbers(x, y, available_numbers)
-        # print(possible_numbers)
         return available_numbers
 
     def _is_ready(self):
+        """
+        Check if all squares are filled
+        :return:
+        """
         for row in self.board:
             is_filled = all(val != 0 for val in row)
             if not is_filled:
                 return False
         return True
 
-    def _line_missing_numbers(self, v, c, available_numbers):  # fix it later, poor performance
-        if self.board[v][c] != 0:
+    def _line_missing_numbers(self, x, y, available_numbers):
+        """
+        Removes impossible values from available numbers
+        :param x:
+        :param y:
+        :param available_numbers:
+        :return:
+        """
+        if self.board[x][y] != 0:
             return []
         for i in range(9):
             for j in range(9):
-                if i == v or j == c:
+                if i == x or j == y:
                     try:
                         available_numbers.remove(self.board[i][j])
                     except ValueError:
                         pass
         return available_numbers
 
-    def _square_missing_numbers(self, v: int, c: int, possible_numbers):
-        for i in range(v // 3 * 3, v // 3 * 3 + 3):
-            for j in range(c // 3 * 3, c // 3 * 3 + 3):
-                if not (i == v and j == c):
+    def _square_missing_numbers(self, x: int, y: int, possible_numbers):
+        """
+        Removes imposible numbers from possible numbers
+        :param x:
+        :param y:
+        :param possible_numbers:
+        :return:
+        """
+        for i in range(x // 3 * 3, x // 3 * 3 + 3):
+            for j in range(y // 3 * 3, y // 3 * 3 + 3):
+                if not (i == x and j == y):
                     try:
                         possible_numbers.remove(self.board[i][j])
                     except ValueError:
