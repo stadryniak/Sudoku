@@ -1,3 +1,20 @@
+from pygame.constants import QUIT
+
+from game_ui import pg
+import sys
+
+
+def update_dispay_text(boxes, x, y, move):
+    for event in pg.event.get():
+        if event.type == QUIT:
+            pg.quit()
+            sys.exit(0)
+    boxes[x][y].text = str(move)
+    boxes[x][y].draw()
+    pg.display.update()
+    pg.time.wait(10)
+
+
 class SudokuBoard:
     """
     creates sudoku board of given size (and appropriate max field value), initial values are 0, solver function
@@ -52,7 +69,7 @@ class SudokuBoard:
         flag = 0
         self.board[x][y] = move
         if self.interactive_mode:
-            boxes[x][y].text = str(move)
+            update_dispay_text(boxes, x, y, move)
         if self._is_ready():
             return True
         for i in range(self.nDims):
@@ -63,7 +80,7 @@ class SudokuBoard:
                 if not possible_moves:
                     self.board[x][y] = 0
                     if self.interactive_mode:
-                        boxes[x][y].text = "0"
+                        update_dispay_text(boxes, x, y, 0)
                     return False
                 for new_move in possible_moves:
                     if self._solver_by_fields_internal(i, j, new_move, boxes):
@@ -76,7 +93,7 @@ class SudokuBoard:
                 break
         self.board[x][y] = 0
         if self.interactive_mode:
-            boxes[x][y].text = "0"
+            update_dispay_text(boxes, x, y, 0)
         return False
 
     def _possible_moves(self, x, y) -> list:

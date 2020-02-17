@@ -23,12 +23,13 @@ GRAY = (150, 150, 150)
 COLOR_ACTIVE = (200, 200, 200)
 COLOR_INACTIVE = WHITE
 
-pygame.init()
-FPSCLOCK = pygame.time.Clock()
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-pygame.display.set_caption("Sudoku")
+pg = pygame
+pg.init()
+FPSCLOCK = pg.time.Clock()
+DISPLAYSURF = pg.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+pg.display.set_caption("Sudoku")
 DISPLAYSURF.fill(BACKGROUND)
-FONT = pygame.font.Font('freesansbold.ttf', 30)
+FONT = pg.font.Font('freesansbold.ttf', 30)
 
 
 def draw_grid():
@@ -38,13 +39,13 @@ def draw_grid():
     """
     # Draw minor lines
     for x in range(0, WINDOWWIDTH, CELLSIZE):  # draw vertical lines
-        pygame.draw.line(DISPLAYSURF, GRAY, (x, 0), (x, WINDOWHEIGHT))
+        pg.draw.line(DISPLAYSURF, GRAY, (x, 0), (x, WINDOWHEIGHT))
         if x % SQUARESIZE == 0:  # draw major lines
-            pygame.draw.line(DISPLAYSURF, BLACK, (x, 0), (x, WINDOWHEIGHT))
+            pg.draw.line(DISPLAYSURF, BLACK, (x, 0), (x, WINDOWHEIGHT))
     for y in range(0, WINDOWHEIGHT, CELLSIZE):
-        pygame.draw.line(DISPLAYSURF, GRAY, (0, y), (WINDOWWIDTH, y))
+        pg.draw.line(DISPLAYSURF, GRAY, (0, y), (WINDOWWIDTH, y))
         if y % SQUARESIZE == 0:
-            pygame.draw.line(DISPLAYSURF, BLACK, (0, y), (WINDOWWIDTH, y))
+            pg.draw.line(DISPLAYSURF, BLACK, (0, y), (WINDOWWIDTH, y))
     return None
 
 
@@ -103,7 +104,7 @@ class InputBox:
     def __init__(self, mid, text="", taken=False):
         self.text = FONT.render(text, True, BLACK, WHITE)
         self.text_rect = self.text.get_rect()
-        self.text_rect.center = (mid[0] - CELLSIZE // 10, mid[1])
+        self.text_rect.center = (mid[0] - CELLSIZE // 7, mid[1])
         self.taken = taken
 
     def draw(self):
@@ -125,18 +126,13 @@ def main_ui(game):
     populate_cells(cells_mid, game.board)
     flag = 1
     while True:
-        for event in pygame.event.get():
+        for event in pg.event.get():
             if event.type == QUIT:
-                pygame.quit()
+                pg.quit()
                 sys.exit(0)
-        if game.validate_solution():
-            for li in cells:
-                for box in li:
-                    if not box.taken:
-                        box.draw()
-        pygame.display.update()
+        pg.display.update()
         if flag == 1:
-            pygame.time.wait(WAITTIME)
+            pg.time.wait(WAITTIME)
             game.solver_by_fields(cells)
             flag = 0
         FPSCLOCK.tick(FPS)
