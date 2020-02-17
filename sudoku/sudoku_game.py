@@ -99,10 +99,11 @@ class SudokuBoard:
         return False
 
     def _possible_moves(self, x, y) -> list:
-        available_numbers = self._square_missing_numbers(x, y)
-        possible_numbers = self._line_missing_numbers(x, y, available_numbers)
+        available_numbers = list(range(1, self.nDims + 1))
+        available_numbers = self._square_missing_numbers(x, y, available_numbers)
+        available_numbers = self._line_missing_numbers(x, y, available_numbers)
         # print(possible_numbers)
-        return possible_numbers
+        return available_numbers
 
     def _is_ready(self):
         for row in self.board:
@@ -123,8 +124,7 @@ class SudokuBoard:
                         pass
         return available_numbers
 
-    def _square_missing_numbers(self, v: int, c: int):
-        possible_numbers = list(range(1, self.nDims + 1))
+    def _square_missing_numbers(self, v: int, c: int, possible_numbers):
         for i in range(v // 3 * 3, v // 3 * 3 + 3):
             for j in range(c // 3 * 3, c // 3 * 3 + 3):
                 if not (i == v and j == c):
