@@ -3,6 +3,7 @@ from pygame.constants import QUIT
 from game_ui import pg
 import sys
 
+WAITMS = 10
 
 def update_dispay_text(boxes, x, y, move):
     for event in pg.event.get():
@@ -14,7 +15,7 @@ def update_dispay_text(boxes, x, y, move):
         boxes[x][y].text = "    "
     boxes[x][y].draw()
     pg.display.update()
-    pg.time.wait(10)
+    pg.time.wait(WAITMS)
 
 
 class SudokuBoard:
