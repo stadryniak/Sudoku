@@ -10,6 +10,8 @@ def update_dispay_text(boxes, x, y, move):
             pg.quit()
             sys.exit(0)
     boxes[x][y].text = str(move)
+    if move == 0:
+        boxes[x][y].text = "    "
     boxes[x][y].draw()
     pg.display.update()
     pg.time.wait(10)
