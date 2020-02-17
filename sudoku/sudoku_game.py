@@ -119,8 +119,8 @@ class SudokuBoard:
         :return:
         """
         available_numbers = list(range(1, self.nDims + 1))
-        available_numbers = self._square_missing_numbers(x, y, available_numbers)
-        available_numbers = self._line_missing_numbers(x, y, available_numbers)
+        self._square_missing_numbers(x, y, available_numbers)
+        self._line_missing_numbers(x, y, available_numbers)
         return available_numbers
 
     def _is_ready(self):
@@ -140,7 +140,6 @@ class SudokuBoard:
         :param x:
         :param y:
         :param available_numbers:
-        :return:
         """
         if self.board[x][y] != 0:
             return []
@@ -151,7 +150,6 @@ class SudokuBoard:
                         available_numbers.remove(self.board[i][j])
                     except ValueError:
                         pass
-        return available_numbers
 
     def _square_missing_numbers(self, x: int, y: int, possible_numbers):
         """
@@ -159,7 +157,6 @@ class SudokuBoard:
         :param x:
         :param y:
         :param possible_numbers:
-        :return:
         """
         for i in range(x // 3 * 3, x // 3 * 3 + 3):
             for j in range(y // 3 * 3, y // 3 * 3 + 3):
@@ -168,7 +165,6 @@ class SudokuBoard:
                         possible_numbers.remove(self.board[i][j])
                     except ValueError:
                         pass
-        return possible_numbers
 
     def validate_solution(self):
         possible_numbers = []
