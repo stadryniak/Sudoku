@@ -2,6 +2,8 @@ import pygame
 import sys
 from pygame.locals import *
 
+from sudoku_game import SudokuBoard
+
 WAITTIME = 3000
 
 # Sets background color
@@ -112,7 +114,7 @@ class InputBox:
         DISPLAYSURF.blit(text, self.text_rect)
 
 
-def main_ui(game):
+def main_ui(game: SudokuBoard):
     """
 
     :type game: SudokuBoard

@@ -43,5 +43,5 @@ def game_selectior(game, num):
 
 if __name__ == "__main__":
     game = sudoku_game.SudokuBoard()
-    game_selectior(game, 2)
+    game_selectior(game, 1)
     game_ui.main_ui(game)
